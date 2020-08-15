@@ -1,10 +1,10 @@
 # OctoPrint-Heatbedsavety
 
-This (very basic) Plugin is able to drive a Relais in series connection to your Solid State.
-This should Octoprint make able to disconnect the heatbed from power in case a damaged Solid state.
+This (very basic) Plugin is able to drive a Relais in series connection to your Solid State and
+should Octoprint make able to disconnect the heatbed from power in case a damaged Solid state.
 
 Disconnect events:
-- reaching or passing the configured max temperature
+- Reaching or passing the configured max temperature
 - Printer events "ERROR" or "CLOSED_WITH_ERROR" raised
 - Toggle sidebar button
 
