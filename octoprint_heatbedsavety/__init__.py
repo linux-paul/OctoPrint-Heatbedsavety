@@ -108,7 +108,7 @@ class HeatBedSavetyPlugin(octoprint.plugin.StartupPlugin,
 		# Plugin here. See https://github.com/foosel/OctoPrint/wiki/Plugin:-Software-Update
 		# for details.
 		return dict(
-			chambertemp=dict(
+			heatbedsavety=dict(
 				displayName="HeatBedSavety Plugin",
 				displayVersion=self._plugin_version,
 
@@ -134,5 +134,6 @@ def __plugin_load__():
 
 	global __plugin_hooks__
 	__plugin_hooks__ = {
-		"octoprint.comm.protocol.temperatures.received": __plugin_implementation__.readtemperature
+		"octoprint.comm.protocol.temperatures.received": __plugin_implementation__.readtemperature,
+		"octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
 	}
