@@ -2,7 +2,8 @@
 from __future__ import absolute_import, unicode_literals
 
 import octoprint.plugin
-import RPi.GPIO as GPIO
+from pyA20.gpio import gpio as GPIO
+from pyA20.gpio import port
 from flask import jsonify, request
 
 
@@ -31,7 +32,6 @@ class HeatBedSavetyPlugin(octoprint.plugin.StartupPlugin,
 
 	def on_shutdown(self):
 		self._bedpower(0)
-		GPIO.cleanup()
 
 	def on_event(self, event, data):
 		if self._gpioup == 1 and event == "PrinterStateChanged":
@@ -54,7 +54,7 @@ class HeatBedSavetyPlugin(octoprint.plugin.StartupPlugin,
 
 	def get_settings_defaults(self):
 		return dict(
-			pin=19,
+			pin=port.PD12,
 			maxtemp=120
 		)
 
@@ -67,9 +67,8 @@ class HeatBedSavetyPlugin(octoprint.plugin.StartupPlugin,
 		return int(self._settings.get(["maxtemp"]))
 
 	def _initgpio(self):
-		GPIO.setmode(GPIO.BCM)
-		GPIO.setwarnings(False)
-		GPIO.setup(self.pin, GPIO.OUT)
+		GPIO.init()
+		GPIO.setcfg(self.pin, GPIO.OUTPUT)
 		self._gpioup = 1
 
 	def _bedpower(self, state):

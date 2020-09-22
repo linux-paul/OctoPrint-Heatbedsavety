@@ -33,7 +33,7 @@ plugin_url = "https://github.com/linux-paul/OctoPrint-Heatbedsavety"
 plugin_license = "AGPLv3"
 
 # Any additional requirements besides OctoPrint should be listed here
-plugin_requires = ["RPi.GPIO>=0.6.5"]
+plugin_requires = ["pyA20>=0.2.10"]
 
 ### --------------------------------------------------------------------------------------------------------------------
 ### More advanced options that you usually shouldn't have to touch follow after this point
