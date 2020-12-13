@@ -12,4 +12,12 @@
             <input type="number" step="any" min="1" class="input-mini text-right" data-bind="value: settings.plugins.heatbedsavety.maxtemp">
         </div>
     </div>
+	    </div>
+	    <div class="control-group">
+        <label class="control-label">{{ _('Default Safety:') }}</label>
+        <div class="controls" data-toggle="tooltip" title="{{ _('With this option is unchecked, the plugin will reverse the output on the pin.') }}">
+            <input type="checkbox" data-bind="checked: settings.plugins.heatbedsavety.default_safety">
+        </div>
+    </div>
+
 </form>

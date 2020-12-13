@@ -24,6 +24,7 @@ class HeatBedSavetyPlugin(octoprint.plugin.StartupPlugin,
 	def on_after_startup(self):
 		self._logger.info("HeatBedSavety up")
 		self._initgpio()
+
 		if self._printer.get_state_id() in self._onevents:
 			self._bedpower(1)
 		else:
@@ -55,7 +56,8 @@ class HeatBedSavetyPlugin(octoprint.plugin.StartupPlugin,
 	def get_settings_defaults(self):
 		return dict(
 			pin=19,
-			maxtemp=120
+			maxtemp=120,
+            default_safety = True
 		)
 
 	@property
@@ -65,6 +67,10 @@ class HeatBedSavetyPlugin(octoprint.plugin.StartupPlugin,
 	@property
 	def maxtemp(self):
 		return int(self._settings.get(["maxtemp"]))
+        
+    @property
+    def default_safety(self):
+        return self._settings.get_boolean(["default_safety"])
 
 	def _initgpio(self):
 		GPIO.setmode(GPIO.BCM)
@@ -76,11 +82,17 @@ class HeatBedSavetyPlugin(octoprint.plugin.StartupPlugin,
 		try:
 			if state == 1:
 				self._powerup = 1
-				GPIO.output(self.pin, GPIO.HIGH)
+                if self.default_safety:
+                    GPIO.output(self.pin, GPIO.HIGH)
+                else:
+                    GPIO.output(self.pin, GPIO.LOW)
 				self._logger.info("BedPower connected")
 			else:
 				self._powerup = 0
-				GPIO.output(self.pin, GPIO.LOW)
+                if self.default_safety:
+                    GPIO.output(self.pin, GPIO.LOW)
+                else:
+                    GPIO.output(self.pin, GPIO.HIGH)
 				self._logger.info("BedPower disconnected")
 
 			self._plugin_manager.send_plugin_message(self._identifier, dict(bedpower=self._powerup))
